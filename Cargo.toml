@@ -1,0 +1,9 @@
+[package]
+name = "uhttp_sse"
+version = "0.5.0"
+authors = ["Mick Koch <mick@kochm.co>"]
+description = "Zero-copy, zero-allocation HTTP Server-Sent Events protocol"
+license = "MIT"
+documentation = "https://docs.rs/uhttp_sse"
+repository = "https://github.com/kchmck/uhttp_sse.rs"
+keywords = ["http", "sse", "server-sent", "events"]
