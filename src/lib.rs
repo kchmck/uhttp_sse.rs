@@ -114,7 +114,7 @@ impl<W: Write> Write for SseField<W> {
 
 /// Writes the field terminating sequence on drop.
 impl<W: Write> Drop for SseField<W> {
-    fn drop(&mut self) { self.0.write(&b"\n"[..]).is_ok(); }
+    fn drop(&mut self) { self.0.write(b"\n").is_ok(); }
 }
 
 #[cfg(test)]
