@@ -37,7 +37,7 @@ it as a dependency in `Cargo.toml`:
 
 ```toml
 [dependencies]
-uhttp_sse = "0.5.0"
+uhttp_sse = "0.5.1"
 ```
 and importing it in the crate root:
 
