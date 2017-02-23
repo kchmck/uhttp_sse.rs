@@ -78,12 +78,18 @@ impl<W: Write> SseMessage<W> {
     pub fn retry(&mut self) -> std::io::Result<SseField<&mut W>> {
         SseField::new(&mut self.0, "retry")
     }
+
+    /// Terminate the current message and begin a new one.
+    pub fn finish(&mut self) -> std::io::Result<()> {
+        try!(self.0.write(b"\n"));
+        Ok(())
+    }
 }
 
 /// Writes the message terminating sequence and flushes on drop.
 impl<W: Write> Drop for SseMessage<W> {
     fn drop(&mut self) {
-        self.0.write(&b"\n"[..]).is_ok();
+        self.finish().is_ok();
         self.0.flush().is_ok();
     }
 }
@@ -169,5 +175,19 @@ mod test {
         }
 
         assert_eq!(&buf[..], &b"data:abc\n\ndata:def\n\n"[..]);
+    }
+
+    #[test]
+    fn test_finish() {
+        let mut buf = vec![];
+
+        {
+            let mut msg = SseMessage::new(&mut buf);
+            write!(msg.data().unwrap(), "abc").unwrap();
+            msg.finish().unwrap();
+            write!(msg.data().unwrap(), "123").unwrap();
+        }
+
+        assert_eq!(buf, b"data:abc\n\ndata:123\n\n");
     }
 }
